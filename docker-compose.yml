@@ -1,0 +1,26 @@
+version: "2"
+services:
+  nginx:
+      build:
+          context: ./nginx
+      ports:
+          - "8080:80"
+      volumes:
+          - ./apps:/var/apps
+  fpm:
+      build:
+          context: ./fpm
+      volumes:
+          - ./apps:/var/apps
+      expose:
+          - "9000"
+      environment:
+          - "DB_HOST=db"
+          - "DB_DATABASE=laravel"
+  db:
+      image: mysql
+      environment:
+          - MYSQL_ROOT_PASSWORD=12345678
+          - MYSQL_DATABASE=tabungan
+      volumes:
+          - ./database:/var/lib/mysql
